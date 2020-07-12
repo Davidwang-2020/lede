@@ -100,6 +100,7 @@ jobs:
           cat >> .config <<EOF
           CONFIG_TARGET_ipq806x=y
           CONFIG_TARGET_ipq806x_DEVICE_linksys_ea8500=y
+          CONFIG_CPU_TYPE_cortex-a15+neon-vfpv4=y
           # CONFIG_TARGET_x86_64_Generic=y
           EOF
           # 固件压缩:
