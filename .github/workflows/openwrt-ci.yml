@@ -10,7 +10,7 @@
 name: OpenWrt-CI
 
 on:
-  #push:
+  push:
     branches: 
       - master
   schedule:
@@ -34,6 +34,14 @@ jobs:
           ref: master
 
       - name: Space cleanup
+      - name: 自定义插件主题。
+        run: |
+          cd package
+          mkdir openwrt-packages
+          cd openwrt-packages
+          git clone https://github.com/openwrt-develop/luci-theme-atmaterial
+          git clone https://github.com/Ameykyl/luci-app-koolproxyR
+          git clone https://github.com/rosywrt/luci-theme-rosy
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
@@ -88,7 +96,7 @@ jobs:
           # 
           # 无论你想要对固件进行怎样的定制, 都需要且只需要修改 EOF 回环内的内容.
           # 
-          # 编译x64固件:
+          # 编译ea8500固件:
           cat >> .config <<EOF
           CONFIG_TARGET_ipq806x=y
           CONFIG_TARGET_ipq806x_DEVICE_linksys_ea8500=y
@@ -147,11 +155,25 @@ jobs:
           CONFIG_PACKAGE_luci-app-webadmin=y
           CONFIG_PACKAGE_luci-app-wireguard=y
           CONFIG_PACKAGE_luci-app-wrtbwmon=y
+          CONFIG_PACKAGE_luci-app-attendedsysupgrade=y
+          CONFIG_PACKAGE_luci-app-autoreboot=y
+          CONFIG_PACKAGE_luci-app-flowoffload=y
+          CONFIG_PACKAGE_luci-app-frpc=y
+          CONFIG_PACKAGE_luci-app-koolproxy=y
+          CONFIG_PACKAGE_luci-app-meshwizard=y
+          CONFIG_PACKAGE_luci-app-qos=y
+          CONFIG_PACKAGE_luci-app-sfe=y
+          CONFIG_PACKAGE_luci-app-watchcat=y
+          CONFIG_PACKAGE_luci-app-webadmin=y
+          CONFIG_PACKAGE_luci-app-S-S R-plus=y
           EOF
           # LuCI主题:
           cat >> .config <<EOF
           CONFIG_PACKAGE_luci-theme-argon=y
           CONFIG_PACKAGE_luci-theme-netgear=y
+          CONFIG_PACKAGE_luci-theme-atmaterial=y
+          CONFIG_PACKAGE_luci-app-koolproxyR=y
+          CONFIG_PACKAGE_luci-theme-rosy=y
           EOF
           # 常用软件包:
           cat >> .config <<EOF
@@ -164,10 +186,10 @@ jobs:
           CONFIG_PACKAGE_wget=y
           EOF
           # 取消编译VMware镜像以及镜像填充 (不要删除被缩进的注释符号):
-          cat >> .config <<EOF
+          #cat >> .config <<EOF
           # CONFIG_TARGET_IMAGES_PAD is not set
           # CONFIG_VMDK_IMAGES is not set
-          EOF
+          #EOF
           # 
           # ========================固件定制部分结束========================
           # 
