@@ -101,7 +101,6 @@ jobs:
           CONFIG_TARGET_ipq806x=y
           CONFIG_TARGET_ipq806x_DEVICE_linksys_ea8500=y
           CONFIG_CPU_TYPE_cortex-a15+neon-vfpv4=y
-          # CONFIG_TARGET_x86_64_Generic=y
           EOF
           # 固件压缩:
           cat >> .config <<EOF
@@ -124,7 +123,7 @@ jobs:
           CONFIG_PACKAGE_kmod-fs-nfs-v4=y
           CONFIG_PACKAGE_kmod-fs-ntfs=y
           CONFIG_PACKAGE_kmod-fs-squashfs=y
-          # EOF
+          EOF
           # USB3.0支持:
           cat >> .config <<EOF
           CONFIG_PACKAGE_kmod-usb-ohci=y
@@ -187,10 +186,10 @@ jobs:
           CONFIG_PACKAGE_wget=y
           EOF
           # 取消编译VMware镜像以及镜像填充 (不要删除被缩进的注释符号):
-          #cat >> .config <<EOF
+          cat >> .config <<EOF
           # CONFIG_TARGET_IMAGES_PAD is not set
           # CONFIG_VMDK_IMAGES is not set
-          #EOF
+          EOF
           # 
           # ========================固件定制部分结束========================
           # 
