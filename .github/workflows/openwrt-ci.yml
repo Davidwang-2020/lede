@@ -45,7 +45,12 @@ jobs:
           sudo -E apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs gcc-multilib g++-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler antlr3 gperf
           sudo -E apt-get -y autoremove --purge
           sudo -E apt-get clean
-      - name: 自定义插件主题。
+      - name: 同步最新的源码
+        run: |
+          git remote add openwrt https://github.com/coolsnowwolf/lede.git
+          git pull openwrt master
+          git remote -v
+      - name: 自定义插件主题
         run: |
           cd package
           mkdir openwrt-packages
@@ -100,7 +105,7 @@ jobs:
           cat >> .config <<EOF
           CONFIG_TARGET_ipq806x=y
           CONFIG_TARGET_ipq806x_DEVICE_linksys_ea8500=y
-          CONFIG_CPU_TYPE_cortex-a15+neon-vfpv4=y
+          CONFIG_TARGET_BOARD="ipq806x"
           EOF
           # 固件压缩:
           cat >> .config <<EOF
@@ -172,7 +177,6 @@ jobs:
           CONFIG_PACKAGE_luci-theme-argon=y
           CONFIG_PACKAGE_luci-theme-netgear=y
           CONFIG_PACKAGE_luci-theme-atmaterial=y
-          CONFIG_PACKAGE_luci-app-koolproxyR=y
           CONFIG_PACKAGE_luci-theme-rosy=y
           EOF
           # 常用软件包:
@@ -189,6 +193,11 @@ jobs:
           cat >> .config <<EOF
           # CONFIG_TARGET_IMAGES_PAD is not set
           # CONFIG_VMDK_IMAGES is not set
+          EOF
+          # 设置固件大小:
+          cat >> .config <<EOF
+          CONFIG_TARGET_KERNEL_PARTSIZE=30
+          CONFIG_TARGET_ROOTFS_PARTSIZE=400
           EOF
           # 
           # ========================固件定制部分结束========================
